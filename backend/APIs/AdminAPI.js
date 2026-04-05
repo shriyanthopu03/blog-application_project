@@ -1,3 +1,2 @@
-import exp from 'express';
-
+import exp from 'express'
 export const adminApp=exp.Router()

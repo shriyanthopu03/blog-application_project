@@ -10,6 +10,8 @@ import EditArticle from "./components/EditArticle";
 import WriteArticles from "./components/WriteArticles";
 import ArticleByID from "./components/ArticleByID";
 import { Toaster } from "react-hot-toast";
+import Unauthorized from "./components/Unauthorized";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const routerObj = createBrowserRouter([
@@ -31,11 +33,19 @@ function App() {
         },
         {
           path: "user-profile",
-          element: <UserProfile />,
+          element: (
+            <ProtectedRoute allowedRoles={["USER"]}>
+              <UserProfile />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "author-profile",
-          element: <AuthorProfile />,
+          element: (
+            <ProtectedRoute allowedRoles={["AUTHOR"]}>
+              <AuthorProfile />
+            </ProtectedRoute>
+          ),
 
           children: [
             {
@@ -59,6 +69,10 @@ function App() {
         {
           path: "edit-article",
           element: <EditArticle />,
+        },
+        {
+          path: "unauthorized",
+          element: <Unauthorized />,
         },
       ],
     },
