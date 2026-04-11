@@ -26,6 +26,25 @@ function UsersList() {
     getUsers();
   }, []);
 
+  const toggleUserStatus = async (userObj) => {
+    const nextStatus = !userObj.isUserActive;
+    try {
+      const res = await axios.patch(
+        `http://localhost:4000/admin-api/users/${userObj._id}/status`,
+        { isUserActive: nextStatus },
+        { withCredentials: true },
+      );
+
+      if (res.status === 200) {
+        setUsers((prev) =>
+          prev.map((user) => (user._id === userObj._id ? { ...user, isUserActive: nextStatus } : user)),
+        );
+      }
+    } catch (err) {
+      setError(err.response?.data?.error || err.response?.data?.message || "Failed to update user status");
+    }
+  };
+
   if (loading) return <p className={loadingClass}>Loading users...</p>;
   if (error) return <p className={errorClass}>{error}</p>;
   if (users.length === 0) return <p className={emptyStateClass}>No users found.</p>;
@@ -55,6 +74,13 @@ function UsersList() {
             </div>
 
             <p className="text-xs text-[#a1a1a6] mt-3">Status: {user.isUserActive ? "Active" : "Blocked"}</p>
+
+            <button
+              className="mt-3 border border-[#d2d2d7] text-[#1d1d1f] font-medium px-4 py-1.5 rounded-full hover:bg-[#f5f5f7] transition-colors cursor-pointer text-sm"
+              onClick={() => toggleUserStatus(user)}
+            >
+              {user.isUserActive ? "Block" : "Unblock"}
+            </button>
           </div>
         ))}
       </div>

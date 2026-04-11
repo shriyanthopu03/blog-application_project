@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
+import { UserModel } from "../models/UserModel.js";
 const { verify } = jwt;
 config();
 
 export const verifyToken = (...allowedRoles) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     try {
       //get token from cookie
       const token = req.cookies?.token; // { token : asdasd}
@@ -19,6 +20,21 @@ export const verifyToken = (...allowedRoles) => {
       if (!allowedRoles.includes(decodedToken.role)) {
         return res.status(403).json({ message: "You are not authorized" });
       }
+
+      const user = await UserModel.findById(decodedToken.id);
+      if (!user) {
+        return res.status(401).json({ message: "Invalid token" });
+      }
+
+      if (!user.isUserActive) {
+        res.clearCookie("token", {
+          httpOnly: true,
+          secure: false,
+          sameSite: "lax",
+        });
+        return res.status(403).json({ message: "error occurred", error: "User blocked" });
+      }
+
       //add decoded token
       req.user = decodedToken;
       next();

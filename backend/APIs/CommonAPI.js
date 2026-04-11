@@ -15,7 +15,7 @@ config();
 commonApp.post("/users", upload.single("profileImageUrl"), async (req, res) => {
   let cloudinaryResult;
   try {
-    let allowedRoles = ["USER", "AUTHOR"];
+    let allowedRoles = ["USER", "AUTHOR", "ADMIN"];
     //get user from req
     const newUser = req.body;
     console.log(newUser);
@@ -65,7 +65,11 @@ commonApp.post("/login", async (req, res) => {
   const user = await UserModel.findOne({ email: email });
   //if use not found
   if (!user) {
-    return res.status(400).json({ message: "Invalid email" });
+    return res.status(400).json({ message: "error occurred", error: "Invalid email" });
+  }
+
+  if (!user.isUserActive) {
+    return res.status(403).json({ message: "error occurred", error: "User blocked" });
   }
   //compare password
   const isMatched = await compare(password, user.password);
