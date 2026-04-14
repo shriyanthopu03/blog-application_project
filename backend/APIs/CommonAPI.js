@@ -11,8 +11,15 @@ import { uploadToCloudinary } from "../config/cloudinaryUpload.js";
 import cloudinary from "../config/cloudinary.js";
 config();
 
+const isProd = process.env.NODE_ENV === "production";
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+};
+
 //Route for register
-commonApp.post("/users", upload.single("profileImageUrl"), async (req, res) => {
+commonApp.post("/users", upload.single("profileImageUrl"), async (req, res, next) => {
   let cloudinaryResult;
   try {
     let allowedRoles = ["USER", "AUTHOR", "ADMIN"];
@@ -49,10 +56,10 @@ commonApp.post("/users", upload.single("profileImageUrl"), async (req, res) => {
   } catch (err) {
     console.log("err is ", err);
     //delete image from cloudinary
-    if (cloudinaryResult.public_id) {
+    if (cloudinaryResult?.public_id) {
       await cloudinary.uploader.destroy(cloudinaryResult.public_id);
     }
-    next(err);
+    return next(err);
   }
 });
 
@@ -94,11 +101,7 @@ commonApp.post("/login", async (req, res) => {
   );
 
   //set token to res header as httpOnly cookie
-  res.cookie("token", signedToken, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-  });
+  res.cookie("token", signedToken, cookieOptions);
   //remove password from user document
   let userObj = user.toObject();
   delete userObj.password;
@@ -110,11 +113,7 @@ commonApp.post("/login", async (req, res) => {
 //Route for Logout
 commonApp.get("/logout", (req, res) => {
   //delete token from cookie storage
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-  });
+  res.clearCookie("token", cookieOptions);
   //send res
   res.status(200).json({ message: "Logout success" });
 });

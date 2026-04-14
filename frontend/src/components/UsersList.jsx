@@ -12,7 +12,7 @@ function UsersList() {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get("blog-application-project-ruddy.vercel.app/admin-api/users", { withCredentials: true });
+        const res = await axios.get("https://http://localhost:4000/admin-api/users", { withCredentials: true });
         if (res.status === 200) {
           setUsers(res.data.payload || []);
         }
@@ -30,7 +30,7 @@ function UsersList() {
     const nextStatus = !userObj.isUserActive;
     try {
       const res = await axios.patch(
-        `blog-application-project-ruddy.vercel.app/admin-api/users/${userObj._id}/status`,
+        `https://http://localhost:4000/admin-api/users/${userObj._id}/status`,
         { isUserActive: nextStatus },
         { withCredentials: true },
       );

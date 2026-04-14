@@ -12,7 +12,7 @@ function AuthorsList() {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get("blog-application-project-ruddy.vercel.app/admin-api/authors", { withCredentials: true });
+        const res = await axios.get("https://http://localhost:4000/admin-api/authors", { withCredentials: true });
         if (res.status === 200) {
           setAuthors(res.data.payload || []);
         }
@@ -30,7 +30,7 @@ function AuthorsList() {
     const nextStatus = !authorObj.isUserActive;
     try {
       const res = await axios.patch(
-        `blog-application-project-ruddy.vercel.app/admin-api/authors/${authorObj._id}/status`,
+        `https://http://localhost:4000/admin-api/authors/${authorObj._id}/status`,
         { isUserActive: nextStatus },
         { withCredentials: true },
       );

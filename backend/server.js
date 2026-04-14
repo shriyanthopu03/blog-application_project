@@ -11,9 +11,12 @@ config();
 
 //create express app
 const app = exp();
+const allowedOrigins =
+  process.env.CORS_ORIGINS?.split(",").map((origin) => origin.trim()).filter(Boolean) ||
+  ["http://localhost:5173", "https://blog-application-project-ruddy.vercel.app"];
 //enable cors
 app.use(cors({
-  origin:['http://localhost:5173'],
+  origin: allowedOrigins,
   credentials:true
 }))
 //add cookie parser middeleware

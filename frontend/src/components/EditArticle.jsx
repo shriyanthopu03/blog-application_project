@@ -43,7 +43,7 @@ function EditArticle() {
     //add articleId to modified article
     modifiedArticle.articleId=article._id;
     //make PUT req to update article
-    let res=await axios.put("blog-application-project-ruddy.vercel.app/author-api/articles",
+    let res=await axios.put("https://http://localhost:4000/author-api/articles",
       modifiedArticle,
       {withCredentials:true})
     //naviagte to articleById component
