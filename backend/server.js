@@ -15,7 +15,7 @@ let dbConnected = false;
 const app = exp();
 const allowedOrigins =
   process.env.CORS_ORIGINS?.split(",").map((origin) => origin.trim()).filter(Boolean) ||
-  ["http://localhost:5173", ""];
+  ["http://localhost:5173", "https://blog-application-backend2.vercel.app"];
 //enable cors
 app.use(cors({
   origin: allowedOrigins,
@@ -25,12 +25,6 @@ app.use(cors({
 app.use(cookieParser())
 //body parser middleware
 app.use(exp.json());
-//path level middlewares
-app.use("/user-api", userApp);
-app.use("/author-api", authorApp);
-app.use("/admin-api", adminApp);
-app.use("/auth", commonApp);
-
 //connect to db
 const connectDB = async () => {
   if (dbConnected) {
@@ -52,6 +46,22 @@ const connectDB = async () => {
     throw err;
   }
 };
+
+// In serverless environments, initialize DB lazily per request (cached by dbConnected)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+//path level middlewares
+app.use("/user-api", userApp);
+app.use("/author-api", authorApp);
+app.use("/admin-api", adminApp);
+app.use("/auth", commonApp);
 
 if (process.env.VERCEL !== "1") {
   connectDB()
