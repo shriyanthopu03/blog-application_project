@@ -15,7 +15,7 @@ let dbConnected = false;
 const app = exp();
 const allowedOrigins =
   process.env.CORS_ORIGINS?.split(",").map((origin) => origin.trim()).filter(Boolean) ||
-  ["http://localhost:5173", "https://blog-application-frontend-theta.vercel.app"].filter(Boolean);
+  [process.env.frontendUrl].filter(Boolean);
 // enable cors
 app.use(cors({
   origin: allowedOrigins,
