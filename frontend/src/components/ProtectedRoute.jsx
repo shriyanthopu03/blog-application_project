@@ -1,6 +1,5 @@
 import { useAuth } from "../store/authStore";
 import { Navigate } from "react-router";
-import {toast} from "react-hot-toast";
 
 function ProtectedRoute({ children, allowedRoles }) {
   //get user login status from store
@@ -11,7 +10,6 @@ function ProtectedRoute({ children, allowedRoles }) {
   }
   //if user not loggedin
   if (!isAuthenticated) {
-    toast.error("Redirecting to Login")
     //redirect to Login
     return <Navigate to="/login" replace />;
   }

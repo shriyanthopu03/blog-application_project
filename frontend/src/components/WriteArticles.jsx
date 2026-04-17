@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import api from "../config/api";
-import {toast} from 'react-hot-toast'
 import { useNavigate } from "react-router";
 
 import {
@@ -41,12 +40,11 @@ function WriteArticles() {
       let res = await api.post("/author-api/article", articleObj);
       //navigate to AuthorArticles
       if (res.status === 201) {
-        toast.success("Article published successfully")
         navigate("../articles");
         // navigate("./author-profile/articles");
       }
     } catch (err) {
-       toast.error(err.response?.data?.error || "Failed to publish article");
+      console.error("Failed to publish article", err);
     } finally {
       setLoading(false);
     }

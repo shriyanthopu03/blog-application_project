@@ -12,7 +12,6 @@ import ArticleByID from "./components/ArticleByID";
 import AdminProfile from "./components/AdminProfile";
 import UsersList from "./components/UsersList";
 import AuthorsList from "./components/AuthorsList";
-import { Toaster } from "react-hot-toast";
 import Unauthorized from "./components/Unauthorized";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -103,12 +102,7 @@ function App() {
     },
   ]);
 
-  return (
-    <div>
-      <Toaster position="top-center" reverseOrder={false} />
-      <RouterProvider router={routerObj} />
-    </div>
-  );
+  return <RouterProvider router={routerObj} />;
 }
 
 export default App;

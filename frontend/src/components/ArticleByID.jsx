@@ -2,7 +2,6 @@ import { useParams, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "../store/authStore";
 import api from "../config/api";
-import { toast } from "react-hot-toast";
 import {
   articlePageWrapper,
   articleHeader,
@@ -62,7 +61,7 @@ function ArticleByID() {
     };
 
     getArticle();
-  }, [id]);
+  }, [id, article]);
 
   const formatDate = (date) => {
     return new Date(date).toLocaleString("en-IN", {
@@ -89,14 +88,13 @@ function ArticleByID() {
 
       setArticle(res.data.payload);
 
-      //  toast.success(res.data.message);
     } catch (err) {
       console.log("ERROR:", err.response);
 
       const msg = err.response?.data?.message;
 
       if (err.response?.status === 400) {
-        toast(msg); // already deleted/active case
+        setError(msg || "Operation failed");
       } else {
         setError(msg || "Operation failed");
       }
