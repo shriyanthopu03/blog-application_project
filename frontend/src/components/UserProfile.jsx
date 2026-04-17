@@ -1,7 +1,7 @@
 import { useAuth } from "../store/authStore";
 import { useNavigate } from "react-router";
 
-import axios from "axios";
+import api from "../config/api";
 import { useEffect, useState } from "react";
 
 import {
@@ -28,7 +28,7 @@ function UserProfile() {
       setLoading(true);
       try {
         //read articles of all authors
-        let res=await axios.get("http://localhost:4000/user-api/articles",{withCredentials:true})
+        let res=await api.get("/user-api/articles")
         //update articles state
         if(res.status===200){
           setArticles((await res).data.payload)

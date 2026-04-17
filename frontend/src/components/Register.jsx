@@ -13,7 +13,7 @@ import {
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
 import { useState } from "react";
-import axios from "axios";
+import api from "../config/api";
 
 function Register() {
   const {
@@ -21,7 +21,6 @@ function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
   const [preview, setPriview] = useState(null);
   const navigate = useNavigate();
@@ -45,10 +44,8 @@ function Register() {
     }
    console.log(profileImageUrl)
     try {
-      //start loading
-      setLoading(true);
       //make HTTP POST req to create User in backend
-      let res = await axios.post("http://localhost:4000/auth/users", formData,{withCredentials:true});
+      let res = await api.post("/auth/users", formData);
 
       if (res.status === 201) {
         //navigate to Login
@@ -57,8 +54,6 @@ function Register() {
     } catch (err) {
       console.log("err in registration", err);
       setApiError(err.response?.data?.error || "Registration failed");
-    } finally {
-      setLoading(false);
     }
   };
 

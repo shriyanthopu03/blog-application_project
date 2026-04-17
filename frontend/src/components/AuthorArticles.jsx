@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../config/api";
 import { useNavigate } from "react-router";
 import { useAuth } from "../store/authStore";
 
@@ -33,7 +33,7 @@ function AuthorArticles() {
       try {
         setLoading(true);
         //read articles of current author
-        let res = await axios.get("http://localhost:4000/author-api/articles", { withCredentials: true });
+        let res = await api.get("/author-api/articles");
         if (res.status === 200) {
           setArticles(res.data.payload);
         }
@@ -52,13 +52,6 @@ function AuthorArticles() {
   const openArticle = (article) => {
     navigate(`/article/${article._id}`, {
       state: article,
-    });
-  };
-
-  const formatDate = (date) => {
-    return new Date(date).toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      dateStyle: "medium",
     });
   };
 
