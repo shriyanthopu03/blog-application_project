@@ -15,7 +15,7 @@ let dbConnected = false;
 const app = exp();
 const allowedOrigins =
   process.env.CORS_ORIGINS?.split(",").map((origin) => origin.trim()).filter(Boolean) ||
-  ["http://localhost:5173", "https://blog-application-backend2.vercel.app"];
+  ["http://localhost:5173", process.env.VITE_BASE_URL];"];
 //enable cors
 app.use(cors({
   origin: allowedOrigins,
