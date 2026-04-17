@@ -13,7 +13,7 @@ config();
 const app = exp();
 const allowedOrigins =
   process.env.CORS_ORIGINS?.split(",").map((origin) => origin.trim()).filter(Boolean) ||
-  ["http://localhost:5173", "https://blog-application-project-ruddy.vercel.app"];
+  ["http://localhost:5173", ""];
 //enable cors
 app.use(cors({
   origin: allowedOrigins,
