@@ -62,13 +62,21 @@ export const useAuth = create((set) => ({
       set({ loading: true });
       const res = await api.get("/auth/check-auth");
 
+      if (!res.data?.authenticated) {
+        set({
+          currentUser: null,
+          isAuthenticated: false,
+          loading: false,
+        });
+        return;
+      }
+
       set({
         currentUser: res.data.payload,
         isAuthenticated: true,
         loading: false,
       });
     } catch (err) {
-      // If user is not logged in → do nothing
       if (err.response?.status === 401) {
         set({
           currentUser: null,
@@ -78,9 +86,12 @@ export const useAuth = create((set) => ({
         return;
       }
 
-      // other errors
       console.error("Auth check failed:", err);
-      set({ loading: false });
+      set({
+        currentUser: null,
+        isAuthenticated: false,
+        loading: false,
+      });
     }
   },
 }));

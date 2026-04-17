@@ -11,9 +11,9 @@ function RootLayout() {
   //import check checkAuth
   let checkAuth=useAuth(state=>state.checkAuth)
 
-  useEffect(()=>{
-    checkAuth()
-  },[])
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
 
   return (

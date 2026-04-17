@@ -4,6 +4,8 @@ import { UserModel } from "../models/UserModel.js";
 const { verify } = jwt;
 config();
 
+const jwtSecret = process.env.SECRET_KEY || process.env.JWT_SECRET;
+
 export const verifyToken = (...allowedRoles) => {
   return async (req, res, next) => {
     try {
@@ -14,7 +16,7 @@ export const verifyToken = (...allowedRoles) => {
         return res.status(401).json({ message: "Please login first" });
       }
       //validate token(decode the token)
-      let decodedToken = verify(token, process.env.SECRET_KEY);
+      let decodedToken = verify(token, jwtSecret);
 
       // check the role is same as role in decodedToken
       if (!allowedRoles.includes(decodedToken.role)) {

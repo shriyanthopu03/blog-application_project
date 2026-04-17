@@ -18,6 +18,8 @@ const cookieOptions = {
   sameSite: isProd ? "none" : "lax",
 };
 
+const jwtSecret = process.env.SECRET_KEY || process.env.JWT_SECRET;
+
 //Route for register
 commonApp.post("/users", upload.single("profileImageUrl"), async (req, res, next) => {
   let cloudinaryResult;
@@ -84,6 +86,9 @@ commonApp.post("/login", async (req, res) => {
   if (!isMatched) {
     return res.status(400).json({ message: "Invalid password" });
   }
+  if (!jwtSecret) {
+    return res.status(500).json({ message: "error occurred", error: "Server misconfigured: missing JWT secret" });
+  }
   //create jwt
   const signedToken = sign(
     {
@@ -94,7 +99,7 @@ commonApp.post("/login", async (req, res) => {
       lastName: user.lastName,
       profileImageUrl: user.profileImageUrl,
     },
-    process.env.SECRET_KEY,
+    jwtSecret,
     {
       expiresIn: "1h",
     },
@@ -119,11 +124,50 @@ commonApp.get("/logout", (req, res) => {
 });
 
 //Page refresh
-commonApp.get("/check-auth", verifyToken("USER", "AUTHOR", "ADMIN"), (req, res) => {
-  res.status(200).json({
-    message: "authenticated",
-    payload: req.user,
-  });
+commonApp.get("/check-auth", async (req, res) => {
+  try {
+    const token = req.cookies?.token;
+
+    if (!token) {
+      return res.status(200).json({
+        message: "unauthenticated",
+        authenticated: false,
+        payload: null,
+      });
+    }
+
+    if (!jwtSecret) {
+      return res.status(200).json({
+        message: "unauthenticated",
+        authenticated: false,
+        payload: null,
+      });
+    }
+
+    const decodedToken = jwt.verify(token, jwtSecret);
+    const user = await UserModel.findById(decodedToken.id);
+
+    if (!user || !user.isUserActive) {
+      res.clearCookie("token", cookieOptions);
+      return res.status(200).json({
+        message: "unauthenticated",
+        authenticated: false,
+        payload: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: "authenticated",
+      authenticated: true,
+      payload: decodedToken,
+    });
+  } catch (err) {
+    return res.status(200).json({
+      message: "unauthenticated",
+      authenticated: false,
+      payload: null,
+    });
+  }
 });
 
 //Change password
