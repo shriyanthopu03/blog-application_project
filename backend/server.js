@@ -13,17 +13,42 @@ let dbConnected = false;
 
 //create express app
 const app = exp();
-const allowedOrigins =
-  process.env.CORS_ORIGINS?.split(",").map((origin) => origin.trim()).filter(Boolean) ||
-  [
-    "http://localhost:5173",
-    "https://blog-application-frontend-theta.vercel.app",
-  ].filter(Boolean);
-// enable cors
-app.use(cors({
-  origin: allowedOrigins,
+const normalizeOrigin = (origin = "") => origin.trim().replace(/\/$/, "");
+
+const envOrigins = (process.env.CORS_ORIGINS || "")
+  .split(",")
+  .map((origin) => normalizeOrigin(origin))
+  .filter(Boolean);
+
+const defaultOrigins = [
+  "http://localhost:5173",
+  "https://blog-application-frontend-theta.vercel.app",
+].map((origin) => normalizeOrigin(origin));
+
+const allowedOrigins = envOrigins.length > 0 ? envOrigins : defaultOrigins;
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow non-browser clients and same-origin requests.
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const normalizedOrigin = normalizeOrigin(origin);
+    if (allowedOrigins.includes(normalizedOrigin)) {
+      return callback(null, true);
+    }
+
+    return callback(null, false);
+  },
   credentials: true,
-}))
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+// enable cors
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 //add cookie parser middeleware
 app.use(cookieParser())
 //body parser middleware
