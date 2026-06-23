@@ -41,18 +41,4 @@ This application allows users to create, manage, and explore blog posts with sec
 - Global State Management using Zustand
 - REST API Architecture
 
----
 
-# Frontend Dependencies
-
-```json
-{
-  "axios": "^1.14.0",
-  "dotenv": "^17.4.2",
-  "react": "^19.2.4",
-  "react-dom": "^19.2.4",
-  "react-hook-form": "^7.72.0",
-  "react-router": "^7.13.2",
-  "tailwindcss": "^4.2.2",
-  "zustand": "^5.0.12"
-}
