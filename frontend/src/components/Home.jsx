@@ -216,11 +216,8 @@ function Home() {
       {/* PERSONALIZED HEADER */}
       <div className="bg-gradient-to-br from-white to-[#f5f5f7] border border-[#e8e8ed] rounded-3xl p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <span className="text-[10px] font-bold text-[#0066cc] bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
-            {currentUser?.role} Dashboard
-          </span>
           <h2 className="text-3xl font-extrabold text-[#1d1d1f] tracking-tight mt-3">
-            Welcome back, {currentUser?.firstName || "Friend"}! 👋
+            Welcome back, {currentUser?.firstName || "Friend"}!
           </h2>
           <p className="text-sm text-[#6e6e73] mt-1.5 leading-relaxed">
             {currentUser?.role === "USER" && "Explore the latest wisdom shared by authors on programming and technology."}
@@ -261,7 +258,6 @@ function Home() {
               onClick={() => navigate("/user-profile")}
               className="bg-[#f5f5f7] hover:bg-white hover:shadow-md border border-[#e8e8ed] rounded-2xl p-6 text-left transition duration-200 group cursor-pointer"
             >
-              <div className="text-xl mb-3">📰</div>
               <h4 className="text-sm font-bold text-[#1d1d1f] group-hover:text-[#0066cc]">Browse Your Feed</h4>
               <p className="text-xs text-[#6e6e73] mt-1">Read articles, view publishing times, and add comments.</p>
             </button>
@@ -269,12 +265,11 @@ function Home() {
               onClick={() => navigate("/user-profile")}
               className="bg-[#f5f5f7] hover:bg-white hover:shadow-md border border-[#e8e8ed] rounded-2xl p-6 text-left transition duration-200 group cursor-pointer"
             >
-              <div className="text-xl mb-3">👤</div>
               <h4 className="text-sm font-bold text-[#1d1d1f] group-hover:text-[#0066cc]">Your User Profile</h4>
               <p className="text-xs text-[#6e6e73] mt-1">Check credentials, logged statuses, and accounts details.</p>
             </button>
             <div className="bg-[#f5f5f7] rounded-2xl p-6 border border-[#e8e8ed] flex flex-col justify-center">
-              <span className="text-xs text-[#a1a1a6]">Protip 💡</span>
+              <span className="text-xs text-[#a1a1a6]">Protip</span>
               <p className="text-xs text-[#6e6e73] mt-1.5 leading-relaxed font-normal">
                 To add feedback or questions, click on any article and scroll to the bottom comments section!
               </p>
@@ -288,7 +283,6 @@ function Home() {
               onClick={() => navigate("/author-profile/write-article")}
               className="bg-blue-50/50 hover:bg-blue-50 hover:shadow-md border border-blue-100 rounded-2xl p-6 text-left transition duration-200 group cursor-pointer"
             >
-              <div className="text-xl mb-3">✍️</div>
               <h4 className="text-sm font-bold text-blue-900 group-hover:text-[#0066cc]">Write New Article</h4>
               <p className="text-xs text-blue-700/80 mt-1">Create posts across Technology, Programming, AI, or Web Dev.</p>
             </button>
@@ -296,7 +290,6 @@ function Home() {
               onClick={() => navigate("/author-profile")}
               className="bg-[#f5f5f7] hover:bg-white hover:shadow-md border border-[#e8e8ed] rounded-2xl p-6 text-left transition duration-200 group cursor-pointer"
             >
-              <div className="text-xl mb-3">📂</div>
               <h4 className="text-sm font-bold text-[#1d1d1f] group-hover:text-[#0066cc]">Manage My Articles</h4>
               <p className="text-xs text-[#6e6e73] mt-1">Edit title details, review active status, or delete files.</p>
             </button>
@@ -304,7 +297,6 @@ function Home() {
               onClick={() => navigate("/")}
               className="bg-[#f5f5f7] hover:bg-white hover:shadow-md border border-[#e8e8ed] rounded-2xl p-6 text-left transition duration-200 group cursor-pointer"
             >
-              <div className="text-xl mb-3">📚</div>
               <h4 className="text-sm font-bold text-[#1d1d1f] group-hover:text-[#0066cc]">All Articles</h4>
               <p className="text-xs text-[#6e6e73] mt-1">Browse all published files from fellow MyBlog authors.</p>
             </button>
@@ -317,7 +309,6 @@ function Home() {
               onClick={() => navigate("/admin-profile/users")}
               className="bg-purple-50/50 hover:bg-purple-50 hover:shadow-md border border-purple-100 rounded-2xl p-6 text-left transition duration-200 group cursor-pointer"
             >
-              <div className="text-xl mb-3">👥</div>
               <h4 className="text-sm font-bold text-purple-900 group-hover:text-purple-600">Moderate Users</h4>
               <p className="text-xs text-purple-700/80 mt-1">View list of users, inspect roles, or block user accounts.</p>
             </button>
@@ -325,7 +316,6 @@ function Home() {
               onClick={() => navigate("/admin-profile/authors")}
               className="bg-[#f5f5f7] hover:bg-white hover:shadow-md border border-[#e8e8ed] rounded-2xl p-6 text-left transition duration-200 group cursor-pointer"
             >
-              <div className="text-xl mb-3">✍️</div>
               <h4 className="text-sm font-bold text-[#1d1d1f] group-hover:text-[#0066cc]">Moderate Authors</h4>
               <p className="text-xs text-[#6e6e73] mt-1">Inspect authors and customize block/active status variables.</p>
             </button>
@@ -333,7 +323,6 @@ function Home() {
               onClick={() => navigate("/admin-profile")}
               className="bg-[#f5f5f7] hover:bg-white hover:shadow-md border border-[#e8e8ed] rounded-2xl p-6 text-left transition duration-200 group cursor-pointer"
             >
-              <div className="text-xl mb-3">🛡️</div>
               <h4 className="text-sm font-bold text-[#1d1d1f] group-hover:text-[#0066cc]">Admin Console</h4>
               <p className="text-xs text-[#6e6e73] mt-1">View comprehensive list details and user profile items.</p>
             </button>
@@ -391,7 +380,7 @@ function Home() {
 
                         <div className="border-t border-[#e8e8ed]/60 pt-3 mt-4 flex items-center justify-between">
                           <span className="text-[10px] font-semibold text-[#6e6e73] flex items-center gap-1">
-                            👤 Author Desk
+                            Author Desk
                           </span>
                           <span className="text-xs font-bold text-[#0066cc] group-hover:translate-x-1 transition-transform">
                             Read article →
